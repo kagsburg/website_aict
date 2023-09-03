@@ -1,0 +1,30 @@
+ErrorDocument  404  404.php
+RewriteEngine On 
+ RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+ RewriteRule ^article/([^/]*)/([^/]*)\.html$ article_details.php?id=$1&title=$2 [L]
+ RewriteRule ^deptleader/([^/]*)/([^/]*)\.html$ leader.php?id=$1&title=$2 [L]
+ RewriteRule ^photos/([0-9]+)/([^/]*)\.html$ photos.php?id=$1&title=$2 [L]
+ RewriteRule ^event/([^/]*)/([^/]*)\.html$ single_event.php?id=$1&title=$2 [L]
+ RewriteRule ^pastor/([^/]*)/([^/]*)\.html$ pastor.php?id=$1&name=$2 [L]
+ RewriteRule ^bishop/([^/]*)/([^/]*)\.html$ bishop.php?id=$1&name=$2 [L]
+ RewriteRule ^secretary/([^/]*)/([^/]*)\.html$ secretary.php?id=$1&name=$2 [L]
+ RewriteRule ^video/([^/]*)/([^/]*)\.html$ video.php?id=$1&name=$2 [L]
+ RewriteRule ^song/([^/]*)/([^/]*)\.html$ song.php?id=$1&name=$2 [L]
+ RewriteRule ^child/([^/]*)/([^/]*)\.html$ childdetails.php?id=$1&name=$2 [L]
+ RewriteRule ^service/([^/]*)/([^/]*)\.html$ servicedetails.php?id=$1&name=$2 [L]
+ RewriteRule ^dept/([^/]*)/([^/]*)\.html$ department.php?id=$1&name=$2 [L]
+ RewriteRule ^diocese/([^/]*)/([^/]*)\.html$ diocese.php?id=$1&name=$2 [L]
+ RewriteRule ^post/([^/]*)/([^/]*)\.html$ deptpost.php?id=$1&title=$2 [L]
+ RewriteRule ^dpost/([^/]*)/([^/]*)\.html$ diocese_post.php?id=$1&title=$2&name=$3 [L]
+ Options All -Indexes
+ 
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^aictanzania\.org$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.aictanzania\.org$
+RewriteRule ^/?$ "https\:\/\/aictanzania\.org\/" [R=301,L]
+

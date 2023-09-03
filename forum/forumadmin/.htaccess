@@ -1,0 +1,9 @@
+ErrorDocument  404  http://aictanzania.org/forum/forumadmin/404.html
+RewriteEngine On 
+            RewriteCond %{REQUEST_FILENAME} !-f
+             RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+ 
+ # For security reasons, Option all cannot be overridden.
+ Options All -Indexes
+ 
