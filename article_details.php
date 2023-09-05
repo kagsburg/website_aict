@@ -220,6 +220,27 @@ $description=$row['article_description'];
 					</div>
 				</div>
 				<aside class="col-md-4">
+                <div class="side-widget">
+						<h5>Article Categories</h5>
+						<ul class="sermon-list">
+                        <?php 
+                          $categories=  mysqli_query($con,"SELECT * FROM category WHERE status='1' ORDER BY category_id DESC");
+                          if(mysqli_num_rows($categories)>0){
+                            
+                                                    while($rows=  mysqli_fetch_array($categories)){
+                                                        $subject2=$rows['category'];
+                                        $id2=$rows['category_id']; 
+                          
+                                                             ?>
+                                                             <li>
+								 <a href="<?php echo BASE_URL.'/category?id='.$id2.'"'; ?>">
+                                                <?php echo $subject2;?></a>
+															
+							</li>
+                               <!--//news-item-->
+                                <?php }}?>
+						</ul>
+					</div>
 					<div class="space50"></div>
 					<div class="side-widget">
 						<h5>Other News</h5>

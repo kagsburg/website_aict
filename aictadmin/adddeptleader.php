@@ -66,6 +66,7 @@ if (!isset($_SESSION['05069'])) {
                 </div>
 
                 <h4 class="header-title m-t-0 m-b-30">Add New Leader</h4>
+                
 
                 <form action="" method="post" enctype="multipart/form-data" name="form">
                   <div class="form-group">
@@ -76,12 +77,12 @@ if (!isset($_SESSION['05069'])) {
                   <div class="form-group">
                     <label class="control-label" for="name1">Profile picture</label>
 
-                    <input type="file" class="form-control" name="image2" required="required">
+                    <input type="file" class="form-control" name="image2">
                   </div>
                   <div class="form-group">
                     <label class="control-label" for="name1">Upload CV (.pdf,.doc,docx)</label>
 
-                    <input type="file" class="form-control" name="cv">
+                    <input type="file" class="form-control" name="pddf">
                   </div>
                   <div class="form-group">
 
@@ -106,6 +107,10 @@ if (!isset($_SESSION['05069'])) {
                     <div class="controls">
                       <input type="text" class="form-control" id="fullname" name="position" placeholder="enter Position" required="required">
                     </div>
+                  </div>
+                  <div class="checkbox">
+                    <input type="checkbox" name="headline" value="yes" id="is_pastor">
+                      <label for="is_pastor">  Is Department Leader Director ?</label>
                   </div>
                   <div class="form-group">
 
@@ -198,7 +203,7 @@ if (!isset($_SESSION['05069'])) {
                   <div class="form-group">
                     <label class="control-label" for="name1">Date of Birth</label>
 
-                    <input type="text" class="form-control" id="dob" name="dob2" placeholder="enter date of birth" required="required">
+                    <input type="text" class="form-control" id="dob" name="dob2" placeholder="enter date of birth" >
 
                   </div>
 

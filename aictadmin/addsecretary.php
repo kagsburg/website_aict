@@ -72,12 +72,23 @@ header('Location:login.php');
               echo '<div class="alert alert-success">Secretary successfully Added</div>';
           }
       }else{
+                if (isset($_FILES['image1']) && $_FILES['image1']['size'] > 0){
                   $image_name1 = $_FILES['image1']['name'];
                   $image_size1 = $_FILES['image1']['size'];
                   $image_temp1 = $_FILES['image1']['tmp_name'];
                   $allowed_ext1 = array('jpg', 'jpeg', 'png', 'gif', 'PNG', 'JPG', 'JPEG', '');
                   $image_ext = explode('.', $image_name1);
                   $image_ext1 = end($image_ext);
+                  if (in_array($image_ext1, $allowed_ext1) === false) {
+                    $errors[] = 'File type not allowed';
+                  }
+                  if ($image_size1 > 10097152) {
+                    $errors[] = 'Maximum size is 10Mb';
+                  }
+
+              }else{
+                $image_ext='';
+              }
                   $name1 = mysqli_real_escape_string($con, trim($_POST['fullname2']));
                   $diocese1 = mysqli_real_escape_string($con, trim($_POST['diocese2']));
                   $dob1 = mysqli_real_escape_string($con, trim($_POST['dob2']));
@@ -92,26 +103,23 @@ header('Location:login.php');
                   $year1 = mysqli_real_escape_string($con, trim($_POST['year2']));
                   $errors = array();
                   $check =  mysqli_query($con, "SELECT * FROM registered_users WHERE username='$username'");
-                  if (in_array($image_ext1, $allowed_ext1) === false) {
-                    $errors[] = 'File type not allowed';
-                  }
-                  if ($image_size1 > 10097152) {
-                    $errors[] = 'Maximum size is 10Mb';
-                  }
+                  
                   if (!empty($errors)) {
                     foreach ($errors as $error) {
                       echo '<div class="alert alert-danger">' . $error . '</div>';
                     }
                   } else {
                     $position = 'pastor';
-                    mysqli_query($con, "INSERT INTO pastors(fullnames,dob,church_id,start_date,wife,poster_id,bio,ext,status) 
+                    mysqli_query($con, "INSERT INTO pastors(fullnames,dob,diocese_id,start_date,wife,poster_id,bio,ext,status) 
                      VALUES('$name1','$dob1','$diocese1','$year1','$wife1','0','$bio1','$image_ext1','$status1')") or die(mysqli_error($con));
                      $pastor_id = mysqli_insert_id($con);
                     $image_name1 = md5(mysqli_insert_id($con));
                     $address = ''; //$username.'@aict.org';
+                    if (isset($_FILES['image1']) && $_FILES['image1']['size'] > 0){
                     // $adduser=  mysqli_query($con,"INSERT INTO registered_users(fullnames,position,phone,gender,dob,occupation,church_id,username,address,password,ext,status) VALUES('$name1','$position','null','null','$dob1','$position','$diocese1','$username','$address','".  md5($password)."','$image_ext1','$status1')") or die(mysqli_error($con));
                     $image_file1 = $image_name1 . '.' . $image_ext1;
                     move_uploaded_file($image_temp1, '../leaders/pastors/' . $image_file1);
+                    }
                     // create_thumb('../article_photos/',$image_file,'../article_photos/thumbs/');
                     //        mysql_query("INSERT INTO  VALUES(NULL,'$album_id','$image_name','$image_ext')") or die(mysql_error());
                     mysqli_query($con,"INSERT INTO secretaries(pastor_id,position_id,status) VALUES('$pastor_id','$position2','1')") or die(mysqli_error($con));    

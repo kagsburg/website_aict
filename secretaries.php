@@ -59,19 +59,24 @@
                                        $row2=  mysqli_fetch_array($getpos);
                                        $secposition=$row2['secposition'];
                                   $pastors=  mysqli_query($con,"SELECT * FROM pastors WHERE  pastor_id='$pastor_id' AND status='active'");
+                                  if (mysqli_num_rows($pastors)==0){
+                                      continue;
+                                  }
                           $row=mysqli_fetch_array($pastors);
-             $pastor_id=$row['pastor_id'];
-             $pastorname=$row['fullnames'];
-             $status2=$row['status'];
-             $church_id=$row['church_id'];
-              $dob=$row['dob'];
+                            $pastor_id=$row['pastor_id'];
+                            $pastorname=$row['fullnames'];
+                            $status2=$row['status'];
+                            $church_id=$row['church_id'];
+                            $dob=$row['dob'];
                            $date=$row['start_date'];
-                   $wife=$row['wife'];
-                $bio=$row['bio'];
-                $ext=$row['ext'];
-                   $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
-                      $row2=  mysqli_fetch_array($getchurch);
-                      $church=$row2['church'];
+                            $wife=$row['wife'];
+                            $bio=$row['bio'];
+                            $ext=$row['ext'];
+                if ($church_id!=0){
+                    $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
+                       $row2=  mysqli_fetch_array($getchurch);
+                       $church=$row2['church'];
+                }
                         ?>
                            <div class="col-md-4">
                         <div style="max-height:250px;overflow: hidden">

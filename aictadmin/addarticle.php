@@ -80,7 +80,7 @@ $category=$_POST['category'];
 $cstatus=$_POST['cstatus'];
 $diocese=$_POST['diocese'];
 $published='unpublished';
-$headline=$_POST['headline'];
+$headline= isset($_POST['headline']) ? $_POST['headline'] : '';
 if(empty($headline)){
     $head='no';
     }
@@ -114,7 +114,7 @@ if ($_FILES["pddf"]['size'] > 0){
     // If all checks are passed, try to upload the file
     if ($uploadOk == 1) {
         if (move_uploaded_file($_FILES["pddf"]["tmp_name"], $targetFile)) {
-            echo "The file " . basename($_FILES["pdf"]["name"]) . " has been uploaded.";
+            echo "The file " . basename($_FILES["pddf"]["name"]) . " has been uploaded.";
         } else {
             echo "Sorry, there was an error uploading your file.";
         }
@@ -139,8 +139,8 @@ echo '<div class="error" style="float:right; margin-right:20%;font-weight:normal
 }
 }
 else{
-  mysqli_query($con,"INSERT INTO news(article_title,article_description article_cat,pdf_file,headline,poster,cstatus,timestamp,published)  
-  VALUES('$article','$description','$category','$pdf_file','$head','$fullname','$cstatus',UNIX_TIMESTAMP(),'$published')") or die(mysqli_error($con));
+  mysqli_query($con,"INSERT INTO news(article_title,article_description ,article_cat,pdf_file,headline,poster,cstatus,timestamp,published)  
+  VALUES('$article','$description','$category','$targetFile','$head','$fullname','$cstatus',UNIX_TIMESTAMP(),'$published')") or die(mysqli_error($con));
 $article_id=  mysqli_insert_id($con);
 $image_name=md5(mysqli_insert_id($con));
 $image_file=$image_name.'.'.$image_ext;

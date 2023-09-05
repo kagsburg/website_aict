@@ -4,7 +4,9 @@
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
 
 <?php 
-  include 'includes/conn2.php'; ?>
+  include 'includes/conn2.php'; 
+  $category = $_GET['id'];
+  ?>
 <head>
     <title>News-Africa inland church Tanzania(AICT)</title>
     <!-- Meta -->
@@ -51,38 +53,9 @@
 						<h5>Latest News</h5>
 						
 					</div>
-                    <div class="container">
-				<div class="col-md-16">
-					<h3>Categries</h3>
-					<p><form class="course-finder-form" action="category" name="form" method="get">
-                                <div class="row">
-                                    <div class="col-md-5 col-sm-5 subject">
-                                        <select name="id" data-placeholder="Choose a bishop..." class="chosen-select form-control subject" style="height:50px" >
-                                        <option value="" selected="selected">choose bishop... </option>
-                                        <?php
-                                             $bishops=  mysqli_query($con,"SELECT * FROM category WHERE status='1' ORDER BY category_id DESC");
-                                            if(mysqli_num_rows($bishops)>0)
-                                                {
-                                                                                            
-                                                            while ($row=mysqli_fetch_array($bishops)){
-                                    //$subject=$row['article_title'];
-                                                $bish_id=$row['category_id'];
-                                                $fullname=$row['category'];
-                                        ?>
-                                        <option value="<?php echo $bish_id;?>"><?php echo $fullname;?></option>
-                                           <?php }}?>
-                                                                                  </select>
-                                        <div id='form_id_errorloc' class='text-danger'></div>
-                                    </div> 
-                                    <div class="col-md-3 col-sm-3 keywords">
-                                                                               <button type="submit" class="btn btn-theme">Choose Bishop</button>
-                                    </div> 
-                                </div>                     
-                            </form><!--//course-finder-form--></p>
-				</div>
-			</div>
+                    
                     <?php
-                            $allarticles=  mysqli_query($con, "SELECT * FROM news WHERE published='published'  ORDER BY article_id DESC LIMIT 5");
+                            $allarticles=  mysqli_query($con, "SELECT * FROM news WHERE published='published' and article_cat='$category'  ORDER BY article_id DESC ");
                              if(mysqli_num_rows($allarticles)>0){
                                                  while($rows=  mysqli_fetch_array($allarticles)){
                                         $article_title=StripSlashes($rows['article_title']);

@@ -100,6 +100,7 @@ header('Location:login.php');
                 $bio=$row['bio'];
                 $username=$row['username'];
                    $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id1'");
+                   if (mysqli_num_rows($getchurch)>0){
                       $row2=  mysqli_fetch_array($getchurch);
                       $church1=$row2['church'];
                       $pastorate_id1=$row2['pastorate_id'];
@@ -146,7 +147,7 @@ function confirm_demote<?php echo $pastor_id;?>() {
              <?php  } ?>                  
   </tr>
         
-                        <?php  } }?>
+                        <?php  } }}?>
                     </tbody>   
            </table>
                                                 </div>

@@ -108,6 +108,11 @@ $status=$row['status'];
                    $wife=$row['wife'];
                 $bio=$row['bio'];
                 $ext=$row['ext'];
+                $diocese_id=$row['diocese_id'];
+                if ($church_id == 0){
+                    continue;
+                }
+                if ($church_id!=0){
                 $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
                       $row2=  mysqli_fetch_array($getchurch);
                       $church=$row2['church'];
@@ -116,6 +121,7 @@ $status=$row['status'];
                            $row3=mysqli_fetch_array($pastorates);
              $pastorate=$row3['pastorate'];
              $diocese_id=$row3['diocese_id'];
+                }
                            if($id==$diocese_id){
                         ?>
                         <div class="col-md-4">
@@ -125,7 +131,9 @@ $status=$row['status'];
                                 </a>
                         </div>
 					<h4>Pastor <span><?php echo $pastorname; ?></span></h4>
+                    <?php if ($church_id!=0){?>
                     <h4><?php echo $church; ?></h4>
+                    <?php } ?>
 					<div class="line"></div>
 					<a href="<?php echo BASE_URL; ?>/pastor/<?php echo $pastor_id.'/'.str_replace(' ','-',$pastorname).'.html';?>" class="hb-more">Read more</a>
 					

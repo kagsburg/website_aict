@@ -70,7 +70,7 @@ header('Location:login.php');
 
                                     <h4 class="header-title m-t-0 m-b-30">All Department Leaders</h4>
   <?php
-                                           $leaders=  mysqli_query($con,"SELECT * FROM deptleaders  WHERE status='active' ORDER BY deptleader_id DESC");
+                                           $leaders=  mysqli_query($con,"SELECT * FROM deptleaders  WHERE status='active' ORDER BY is_director DESC");
            if(mysqli_num_rows($leaders)<1)
                {
                echo '<div class="alert alert-danger" style="text-align:center">Oops!! no Leaders added yet</div>';
@@ -78,7 +78,8 @@ header('Location:login.php');
                                     <table id="datatable" class="table table-striped dt-responsive nowrap">
                                       
                                         <thead>
-          <th >FULLNAMES</th>
+                                            <th>ROLE</th>
+                     <th >FULLNAMES</th>
                     <th >DOB</th>
                     <th>START DATE</th>
                     <th>DEPARTMENT</th>
@@ -102,14 +103,16 @@ header('Location:login.php');
                 $position=$row['position'];
                 $wife=$row['wife'];
                 $bio=$row['bio'];
+                $director=$row['is_director'];
                      $getdept=  mysqli_query($con,"SELECT * FROM departments  WHERE department_id='$dept_id'");
                                        $row4=  mysqli_fetch_array($getdept);
                                          $department=$row4['department'];
                       ?> 
                                      
         <tr>
-   <td><?php echo $fullname;?></td>
-   <td><?php echo $dob; ?></td>
+            <td><?php if($director=='1'){echo "Director";}else{echo 'Others';}?></td>
+                                <td><?php echo $fullname;?></td>
+                                <td><?php echo $dob; ?></td>
                               <td><?php  echo $date; ?></td>
                               <td><?php  echo $department; ?></td>
                               <td><?php  echo $position; ?></td>
@@ -203,7 +206,9 @@ $('#editbishop<?php echo $id; ?>').modal(options);
 
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#datatable').dataTable();
+                $('#datatable').dataTable({
+                    "order": [[ 0, "asc" ]]
+                });
                 $('#datatable-keytable').DataTable( { keys: true } );
                 $('#datatable-responsive').DataTable();
                 $('#datatable-scroller').DataTable( { ajax: "assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true } );

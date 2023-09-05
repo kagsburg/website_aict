@@ -15,12 +15,17 @@
              $pastorname1=$row['fullnames'];
              $status1=$row['status'];
              $church_id=$row['church_id'];
+             $diocese_id=$row['diocese_id'];
               $dob1=$row['dob'];
                            $date1=$row['start_date'];
                    $wife1=$row['wife'];
                 $bio1=$row['bio'];
                 $ext1=$row['ext'];
-                   $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
+                if ($church_id!=0){
+                     $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
+                        $row2=  mysqli_fetch_array($getchurch);
+                        $church=$row2['church'];
+                        $getchurch=  mysqli_query($con,"SELECT * FROM churches WHERE status='1'  AND church_id='$church_id'");
                       $row2=  mysqli_fetch_array($getchurch);
                       $church=$row2['church'];
                       $pastorate_id=$row2['pastorate_id'];
@@ -28,9 +33,15 @@
                            $row3=mysqli_fetch_array($pastorates);
              $pastorate=$row3['pastorate'];
              $diocese_id=$row3['diocese_id'];
-               $getdioceses=  mysqli_query($con,"SELECT * FROM dioceses  WHERE diocese_id='$diocese_id'");
-                                       $row4=  mysqli_fetch_array($getdioceses);
-                                         $diocese=$row4['diocese'];
+             $getdioceses=  mysqli_query($con,"SELECT * FROM dioceses  WHERE diocese_id='$diocese_id'");
+                                          $row4=  mysqli_fetch_array($getdioceses);
+                                            $diocese=$row4['diocese'];
+                }else{
+                  $getdioceses=  mysqli_query($con,"SELECT * FROM dioceses  WHERE diocese_id='$diocese_id'");
+                                          $row4=  mysqli_fetch_array($getdioceses);
+                                            $diocese=$row4['diocese'];
+                }
+                   
                                                   
                                                   
   ?>
@@ -96,8 +107,10 @@
 							<ul class="team-single-meta">
                             <li><strong> Full names:</strong><br/> <em>  <?php echo $pastorname1;?></em></li>
                                         <li><strong> Position:</strong><br/> <em>  <?php echo $secposition;?></em></li>
+                                        <?php if ($church_id!=0){?>
                                         <li><strong>Church:</strong><br/> <em><?php echo $church;?></em></li>
                                          <li><strong>Pastorate  name: </strong><br/> <em> <?php echo $pastorate;?></em></li>
+                                        <?php }?>
                                          <li><strong>Diocese name: </strong><br/> <em> <?php echo $diocese;?></em></li>
                                         <li><strong>Date Of Birth:</strong><br/> <em><?php echo $dob1;?></em></li>
                                         <li><strong>Married to: </strong> <br/><em><?php echo $wife1;?></em></li>

@@ -71,19 +71,37 @@ $poster=$_GET['poster'];
            if ((isset($_POST['subject'],$_POST['details']))&&(!empty($_POST['details']))&&(!empty($_POST['subject']))){
           $subject=mysqli_real_escape_string($con,trim($_POST['subject']));
        $details=mysqli_real_escape_string($con,trim($_POST['details']));
-  mysqli_query($con,"UPDATE news SET article_title='$subject',article_description='$details' WHERE article_id='$id'") or die(mysqli_error($con));
+         $category=mysqli_real_escape_string($con,trim($_POST['category']));
+  mysqli_query($con,"UPDATE news SET article_title='$subject',article_description='$details',article_cat='$category' WHERE article_id='$id'") or die(mysqli_error($con));
   echo '<div class="alert alert-success">Article successfully Edited</div>';
                 }
                  $articles=  mysqli_query($con,"SELECT * FROM news   WHERE article_id='$id'");  
      $row=mysqli_fetch_array($articles);
 $subject1=$row['article_title'];
 $description1=$row['article_description'];
+$category1=$row['article_cat'];
            
     ?>   
                                     <form action=""  method="post" enctype="multipart/form-data">
                                                                                     <div class="form-group">
                                             <label for="userName">Post Title*</label>
                                             <input type="text" name="subject" parsley-trigger="change" required     placeholder="Enter post title" class="form-control" id="title" value="<?php echo $subject1; ?>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="photo">Article Category</label>
+                                            <select class="form-control" name="category" id="category" parsley-trigger="change" required>
+                                                                          <option value="" selected="selected">Select category..</option>
+                                                                          <?php  
+                                                                             $getcategory=  mysqli_query($con,"SELECT * FROM category WHERE status='1'");
+                                                                                while ($row = mysqli_fetch_array($getcategory)) {    
+                                                                                    $category_id=$row['category_id'];
+                                                                                    $category=$row['category'];
+                                                                                    
+                                                                          ?>
+                                                                          <option value="<?php echo $category_id ?>" <?php if ($category1 == $category_id){ echo "selected"; } ?>><?php echo $category ; ?></option>
+                                                                          <?php } ?>
+                                            </select>
+
                                         </div>
 
       

@@ -22,6 +22,7 @@ header('Location:login.php');
                 $cvs1=$row['cvs'];
                 $username1=$row['username'];
                  $church_id1=$row['church_id'];
+                 $director = $row['is_director'];
                      $getdept=  mysqli_query($con,"SELECT * FROM departments  WHERE department_id='$dept_id1'");
                                        $row4=  mysqli_fetch_array($getdept);
                                          $department1=$row4['department'];
@@ -178,7 +179,7 @@ $status=$row['status'];
 			  </div>
                                   <div class="form-group">
                                                                            <div class="controls">
-                                                                               <button type="submit" class="btn btn-info" style="margin-right:" name="change">Change</button>
+                                                                               <button type="submit" class="btn btn-info" name="change">Change</button>
 				</div>
 </div>
                               </fieldset>
@@ -225,8 +226,17 @@ $dob2=mysqli_real_escape_string($con,trim($_POST['dob2']));
 $bio2=mysqli_real_escape_string($con,trim($_POST['bio2']));
  $wife2= mysqli_real_escape_string($con,trim($_POST['wife2']));
 $year2=mysqli_real_escape_string($con,trim($_POST['year2']));
+$isdirector = isset($_POST['headline']) ? $_POST['headline'] : '';
 $errors2=array();
-
+if ($isdirector == 'yes') {
+  $director = '1';
+  // $check =  mysqli_query($con, "SELECT * FROM deptleaders WHERE status='active' and dept_id='$department' and fullname='$name1' and is_director=1");
+  // if ($check > 0) {
+  //   $errors[] = 'Department Director already exists.';
+  // }
+} else {
+  $director = '0';
+}
 if((empty($department))||(empty($position))){
     $errors2[]='Some fields shouldnt be empty';
 }
@@ -256,19 +266,20 @@ else{
     $ext='no';
    
 if(!empty($image_name)){
-        mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',start_date='$year2',wife='$wife2',bio='$bio2',ext='$image_ext2'  WHERE deptleader_id='$id'") or die(mysqli_error($con));
+        mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',
+        start_date='$year2',wife='$wife2',bio='$bio2',ext='$image_ext2',is_director='$director'  WHERE deptleader_id='$id'") or die(mysqli_error($con));
      $image_name2=md5($id);
   $image_file2=$image_name2.'.'.$image_ext2;
 move_uploaded_file($image_temp2,'../leaders/deptleaders/'.$image_file2) or die(mysqli_error($con));
 }
        if(!empty($cv_name2)){
-               mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',start_date='$year2',wife='$wife2',bio='$bio2',cvs='$cv_ext2'  WHERE deptleader_id='$id'") or die(mysqli_error($con));
+               mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',start_date='$year2',wife='$wife2',bio='$bio2',cvs='$cv_ext2',is_director='$director'  WHERE deptleader_id='$id'") or die(mysqli_error($con));
      $image_name2=md5($id);
 $cv_file2=$image_name2.'.'.$cv_ext2;
            move_uploaded_file($cv_temp2,'../cvs/'.$cv_file2) or die(mysqli_error($con));
        }
        if((empty($image_name))&&(empty($cv_name2))){
-     mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',start_date='$year2',wife='$wife2',bio='$bio2'  WHERE deptleader_id='$id'") or die(mysqli_error($con));        
+     mysqli_query($con,"UPDATE deptleaders SET fullnames='$name2',dob='$dob2',position='$position',dept_id='$department',start_date='$year2',wife='$wife2',bio='$bio2',is_director='$director'  WHERE deptleader_id='$id'") or die(mysqli_error($con));        
        }
            echo '<div class="alert alert-success" style="text-align:center"> Leader  Details Successfully Edited</div>';  
             }
@@ -301,10 +312,10 @@ $cv_file2=$image_name2.'.'.$cv_ext2;
                                                          <?php 
                                                 $depts=  mysqli_query($con,"SELECT * FROM departments  WHERE status='1' ORDER BY department");
                                                                 while ($row=mysqli_fetch_array($depts)){
-$dept=$row['department'];
-$status=$row['status'];
-             $dept_id=$row['department_id'];
-                                            ?>
+                                                                        $dept=$row['department'];
+                                                                        $status=$row['status'];
+                                                                                    $dept_id=$row['department_id'];
+                                                                        ?>
                                                         <option value="<?php echo $dept_id; ?>"><?php echo $dept;?></option>
                                                 <?php }?>
                                                     </select>
@@ -316,6 +327,10 @@ $status=$row['status'];
                                     <input type="text" class="form-control" id="fullname" name="position"  placeholder="enter Position" value="<?php echo $position1; ?>" required="required">
 </div>
 			  </div>
+        <div class="checkbox">
+                    <input type="checkbox" name="headline" <?php if ($director == 1){ echo "checked" ;} ?> value="yes" id="is_pastor">
+                      <label for="is_pastor">  Is Department Leader Director ?</label>
+                  </div>
 
 			
 
