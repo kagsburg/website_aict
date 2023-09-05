@@ -118,7 +118,8 @@ and serves man in his perfection based on the Word of God.</p>
 		<div class="container">
 			<div class="col-md-16">
 				<h4>Organisation Structure</h4>
-				<img src="assets/images/strutuce.jpg" class="img img-responsive" width="100%">
+				<img src="assets/images/aictimage.jpg" class="img img-responsive" width="100%">
+				<hr/>
 				<img src="assets/images/strutuce.jpg" class="img img-responsive" width="100%">
 			</div>
 		</div>
