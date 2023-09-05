@@ -75,6 +75,7 @@ $allowed_ext=array('jpg','jpeg','png','gif','');
 $ext=explode('.',$image_name);
 $image_ext=  strtolower(end($ext));
 $article=mysqli_real_escape_string($con,trim($_POST['article']));
+$category=$_POST['category'];
 //$image=$_POST['image'];
 $cstatus=$_POST['cstatus'];
 $diocese=$_POST['diocese'];
@@ -85,6 +86,41 @@ if(empty($headline)){
     }
  else {
    $head='yes';   
+}
+if ($_FILES["pddf"]['size'] > 0){
+    $targetDirectory = "../pdfs/"; // Specify the directory where you want to save the PDF files
+    $targetFile = $targetDirectory . basename($_FILES["pddf"]["name"]);
+    $uploadOk = 1;
+    $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    
+    // Check if the file is a PDF
+    if ($fileType != "pdf") {
+        $errors[]= "Sorry, only PDF files are allowed.";
+        $uploadOk = 0;
+    }
+    
+    // Check if the file already exists
+    if (file_exists($targetFile)) {
+        $errors[]= "Sorry, the file already exists.";
+        $uploadOk = 0;
+    }
+    
+    // Check file size (you can adjust this value as needed)
+    if ($_FILES["pddf"]["size"] > 5000000) { // 5 MB
+        $errors[]= "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+    
+    // If all checks are passed, try to upload the file
+    if ($uploadOk == 1) {
+        if (move_uploaded_file($_FILES["pddf"]["tmp_name"], $targetFile)) {
+            echo "The file " . basename($_FILES["pdf"]["name"]) . " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
+}else{
+    $targetFile='';
 }
 $description=mysqli_real_escape_string($con,trim($_POST['description']));
 $errors=array();
@@ -103,7 +139,8 @@ echo '<div class="error" style="float:right; margin-right:20%;font-weight:normal
 }
 }
 else{
-  mysqli_query($con,"INSERT INTO news(article_title,article_description,headline,poster,cstatus,timestamp,published)  VALUES('$article','$description','$head','$fullname','$cstatus',UNIX_TIMESTAMP(),'$published')") or die(mysqli_error($con));
+  mysqli_query($con,"INSERT INTO news(article_title,article_description article_cat,pdf_file,headline,poster,cstatus,timestamp,published)  
+  VALUES('$article','$description','$category','$pdf_file','$head','$fullname','$cstatus',UNIX_TIMESTAMP(),'$published')") or die(mysqli_error($con));
 $article_id=  mysqli_insert_id($con);
 $image_name=md5(mysqli_insert_id($con));
 $image_file=$image_name.'.'.$image_ext;
@@ -134,6 +171,26 @@ move_uploaded_file($image_temp,'../newsphotos/'.$image_file) or die(mysqli_error
                                         <div class="form-group">
                                             <label for="photo">Article Photo*</label>
                                             <input type="file" name="image" parsley-trigger="change" required   class="form-control" accept="image/*" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="photo">Article PDF</label>
+                                            <input type="file" name="pddf"    class="form-control" accept="pdf/*" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="photo">Article Category</label>
+                                            <select class="form-control" name="category" id="category" parsley-trigger="change" required>
+                                                                          <option value="" selected="selected">Select category..</option>
+                                                                          <?php  
+                                                                             $getcategory=  mysqli_query($con,"SELECT * FROM category WHERE status='1'");
+                                                                                while ($row = mysqli_fetch_array($getcategory)) {    
+                                                                                    $category_id=$row['category_id'];
+                                                                                    $category=$row['category'];
+                                                                                    
+                                                                          ?>
+                                                                          <option value="<?php echo $category_id ?>"><?php echo $category ; ?></option>
+                                                                          <?php } ?>
+                                            </select>
+
                                         </div>
                                            <div class="form-group">
 				<label  for="name1">Comment Options</label>

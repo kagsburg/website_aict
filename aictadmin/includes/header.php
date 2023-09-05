@@ -77,6 +77,8 @@ $name=  mysqli_query($con,"SELECT * FROM users WHERE user_id='".$_SESSION['05069
                                 <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-edit"></i><span> Articles </span> </a>
                                 <ul class="list-unstyled">
                                     <li><a href="articles">Articles</a></li>
+                                    <li><a href="categories">Article Categories</a></li>
+
                                     <li><a href="addarticle">Add Article</a></li>
                                   
                                 </ul>
