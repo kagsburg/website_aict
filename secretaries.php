@@ -84,7 +84,11 @@
                                     <img class="img-responsive" src="<?php echo BASE_URL;?>/leaders/pastors/<?php echo md5($pastor_id).'.'.$ext;?>" alt="Pastor <?php echo $pastorname; ?>" />
                                 </a>
                         </div>
-					<h4>Pastor <?php echo $pastorname; ?></h4>
+					<h4>
+                        <?php if ($church_id!=0){?>
+                            Pastor
+                        <?php }?>
+                        <?php echo $pastorname; ?></h4>
                     <h4><?php echo $secposition; ?></h4>
 					<div class="line"></div>
 					<a href="<?php echo BASE_URL; ?>/secretary/<?php echo $secretary_id.'/'.str_replace(' ','-',$pastorname).'.html';?>">Read more</a>
